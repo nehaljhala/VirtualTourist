@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="18154" systemVersion="20D91" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+    <entity name="AlbumLocation" representedClassName="AlbumLocation" syncable="YES" codeGenerationType="class">
+        <attribute name="imageCount" optional="YES" attributeType="Integer 64" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="lat" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <attribute name="lon" optional="YES" attributeType="Double" defaultValueString="0.0" usesScalarValueType="YES"/>
+        <relationship name="imagesGrp" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="PhotoImage" inverseName="locaGrp" inverseEntity="PhotoImage"/>
+    </entity>
+    <entity name="PhotoImage" representedClassName="PhotoImage" syncable="YES" codeGenerationType="class">
+        <attribute name="farm" optional="YES" attributeType="Integer 32" defaultValueString="0" usesScalarValueType="YES"/>
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="image" optional="YES" attributeType="Binary" allowsExternalBinaryDataStorage="YES"/>
+        <attribute name="photoId" optional="YES" attributeType="String"/>
+        <attribute name="secret" optional="YES" attributeType="String"/>
+        <attribute name="server" optional="YES" attributeType="String"/>
+        <relationship name="locaGrp" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="AlbumLocation" inverseName="imagesGrp" inverseEntity="AlbumLocation"/>
+    </entity>
+    <elements>
+        <element name="AlbumLocation" positionX="-471.06640625" positionY="-12.8125" width="128" height="103"/>
+        <element name="PhotoImage" positionX="-63" positionY="-18" width="128" height="134"/>
+    </elements>
+</model>
