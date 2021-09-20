@@ -16,7 +16,7 @@
         <relationship name="locaGrp" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="AlbumLocation" inverseName="imagesGrp" inverseEntity="AlbumLocation"/>
     </entity>
     <elements>
-        <element name="AlbumLocation" positionX="-471.06640625" positionY="-12.8125" width="128" height="103"/>
+        <element name="AlbumLocation" positionX="-471.06640625" positionY="-12.8125" width="128" height="89"/>
         <element name="PhotoImage" positionX="-63" positionY="-18" width="128" height="134"/>
     </elements>
 </model>

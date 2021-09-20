@@ -16,7 +16,6 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDelegate,UICol
     @IBOutlet weak var mapView: MKMapView!
     @IBOutlet weak var collectionView: UICollectionView!
     @IBOutlet weak var flowLayout: UICollectionViewFlowLayout!
-    @IBOutlet weak var indicator: UIActivityIndicatorView!
     
     var albumLocation: AlbumLocation!
     var images = [PhotoImage]()
@@ -25,6 +24,7 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDelegate,UICol
     var lon = Double()
     var zoomMapLocation = CLLocationCoordinate2D()
     let client = Client()
+    var delay:Bool = true
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,18 +43,20 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDelegate,UICol
         self.mapView.addAnnotations([annotation])
         NotificationCenter.default.addObserver(self, selector: #selector(finishedDownload), name: .didFinishSave, object: nil)
         setZoomOnMap(CLLocationCoordinate2DMake(lat, lon), map: mapView)
+        DispatchQueue.main.asyncAfter(deadline: .now() + 2) {
+            self.delay = false
+            self.collectionView.reloadData()
+        }
     }
-    
     override func viewWillAppear(_ animated: Bool) {
         newCollButton.isEnabled = false
-        indicator.isHidden = false
-        indicator.startAnimating()
     }
     
     @objc func finishedDownload(){
         newCollButton.isEnabled = true
         self.images = onTheCallDatabase.fetchImage(albumLocation)
         collectionView.reloadData()
+        
     }
     
     //zoom on region:
@@ -93,10 +95,16 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDelegate,UICol
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as! CollectionViewCell
-        cell.imageView.image = UIImage(data: (images[indexPath.row].image)!)
-        indicator.stopAnimating()
-        self.indicator.isHidden = true
-        self.newCollButton.isEnabled = true
+        if(delay==false) {
+            cell.imageView.image = UIImage(data: (images[indexPath.row].image)!)
+            cell.indicator.stopAnimating()
+            cell.indicator.isHidden = true
+            self.newCollButton.isEnabled = true
+        }
+        else {
+            cell.indicator.isHidden = false
+            cell.indicator.startAnimating()
+        }
         return cell
     }
     
@@ -124,18 +132,17 @@ class PhotoAlbumViewController: UIViewController, UICollectionViewDelegate,UICol
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
         var context: NSManagedObjectContext!
         context = appDelegate.persistentContainer.viewContext
-        
         for image in images {
             context.delete(image)
         }
         images.removeAll()
-        
         do{
             try context.save()
         } catch let error as NSError {
             print("Could not delete. \(error), \(error.userInfo)")
         }
-        client.downloadImagesFromAPI(lat, lon, albumLocation)
+        let pageCount:Int64 = albumLocation.imageCount/50 + 1
+        client.downloadImagesFromAPI(lat, lon, Int.random(in: 1...Int(pageCount)), albumLocation)
         self.collectionView.reloadData()
     }
     

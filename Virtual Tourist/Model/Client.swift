@@ -12,8 +12,8 @@ class Client{
     
     var onTheCallDatabase = OnTheCallDatabase()
     
-    func getJson(_ lat: Double , _ lon: Double, completion: @escaping (_ response: structPhotoSearchResponse?, _ error: Error?,_ success: Bool)-> ()) {
-        let urlString = "https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=8cdd6874300d5a87adb3d10829a91533&lat=\(lat)&lon=\(lon)&format=json&nojsoncallback=1"
+    func getJson(_ lat: Double , _ lon: Double, _ pageNo:Int, completion: @escaping (_ response: structPhotoSearchResponse?, _ error: Error?,_ success: Bool)-> ()) {
+        let urlString = "https://www.flickr.com/services/rest/?method=flickr.photos.search&api_key=8cdd6874300d5a87adb3d10829a91533&lat=\(lat)&lon=\(lon)&(page)=\(pageNo)&format=json&nojsoncallback=1&per_page=\(50)"
         print("getJson - Fetch Photo List: ", urlString)
         if let url = URL(string: urlString) {
             URLSession.shared.dataTask(with: url) {data, res, err in
@@ -46,11 +46,14 @@ class Client{
         }.resume()
     }
     
-    func downloadImagesFromAPI(_ lat:CLLocationDegrees,_ lon:CLLocationDegrees, _ albumLoc:AlbumLocation){
-        getJson(lat, lon){ (photoSearchResponse, error, success)  in
+    func downloadImagesFromAPI(_ lat:CLLocationDegrees,_ lon:CLLocationDegrees, _ pageNo:Int, _ albumLoc:AlbumLocation){
+        getJson(lat, lon, pageNo){ (photoSearchResponse, error, success)  in
             DispatchQueue.main.async {
                 if success == true{
+                    self.onTheCallDatabase.saveTotalPhotoCount(albumLoc, Int(photoSearchResponse!.photos.total))
                     if (photoSearchResponse!.photos.photo.count > 0 ) {
+                        //PERSIST ALBUM TO DB
+                        //Bug if info icon is clicked before response to first api then we are in trouble
                         for image in photoSearchResponse!.photos.photo{
                             //var photoImage =
                             self.downloadImage(image) {(data, error, success) in
@@ -59,8 +62,6 @@ class Client{
                                 }
                             }
                         }
-                    }
-                    else{
                     }
                 }
             }

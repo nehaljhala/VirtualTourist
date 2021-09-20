@@ -10,8 +10,11 @@ struct structPhotoSearchResponse: Codable{
     var photos: structPhotos
 }
 struct structPhotos: Codable{
+    var total: Int64
     var photo: [structPhoto]
+  
 }
+    
 struct structPhoto: Codable{
     var id: String
     var secret: String

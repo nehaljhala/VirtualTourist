@@ -70,10 +70,6 @@
                                     <size key="footerReferenceSize" width="0.0" height="0.0"/>
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
-                                <activityIndicatorView key="backgroundView" opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" style="medium" id="d9a-9x-3j7">
-                                    <rect key="frame" x="0.0" y="0.0" width="414" height="510"/>
-                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                </activityIndicatorView>
                                 <cells>
                                     <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleAspectFit" reuseIdentifier="cell" id="67D-aw-2Vu" customClass="CollectionViewCell" customModule="Virtual_Tourist" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="110.5" height="131"/>
@@ -82,9 +78,13 @@
                                             <rect key="frame" x="0.0" y="0.0" width="110.5" height="131"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ewU-te-kjV">
+                                                <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" placeholderIntrinsicWidth="110" placeholderIntrinsicHeight="110" translatesAutoresizingMaskIntoConstraints="NO" id="ewU-te-kjV">
                                                     <rect key="frame" x="0.0" y="21" width="110" height="110"/>
                                                 </imageView>
+                                                <activityIndicatorView opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" fixedFrame="YES" style="medium" translatesAutoresizingMaskIntoConstraints="NO" id="NdD-uC-wgb">
+                                                    <rect key="frame" x="45" y="55" width="20" height="20"/>
+                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                                </activityIndicatorView>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstAttribute="bottom" secondItem="ewU-te-kjV" secondAttribute="bottom" id="FLc-XG-xxR"/>
@@ -96,6 +96,7 @@
                                         <size key="customSize" width="110.5" height="131"/>
                                         <connections>
                                             <outlet property="imageView" destination="ewU-te-kjV" id="n0K-RB-SuZ"/>
+                                            <outlet property="indicator" destination="NdD-uC-wgb" id="MSD-1u-pkX"/>
                                         </connections>
                                     </collectionViewCell>
                                 </cells>
@@ -148,7 +149,6 @@
                         <outlet property="backButton" destination="nTU-Ra-mt6" id="a0R-nP-1jP"/>
                         <outlet property="collectionView" destination="9my-qr-5KT" id="XTE-ck-gmz"/>
                         <outlet property="flowLayout" destination="V0x-fk-ghZ" id="NOU-at-8M3"/>
-                        <outlet property="indicator" destination="d9a-9x-3j7" id="id8-rO-xLF"/>
                         <outlet property="mapView" destination="yeU-SN-5wE" id="a5d-s7-G29"/>
                         <outlet property="newCollButton" destination="KuF-oi-pG3" id="F6R-zy-Yxz"/>
                     </connections>

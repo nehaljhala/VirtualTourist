@@ -85,6 +85,21 @@ class OnTheCallDatabase{
         return albumLoc
     }
     
+    
+    func saveTotalPhotoCount(_ albumLoc: AlbumLocation, _ totalPhotos: Int){
+        var context: NSManagedObjectContext {
+            let appDelegate = UIApplication.shared.delegate as! AppDelegate
+            return appDelegate.persistentContainer.viewContext
+        }
+        albumLoc.imageCount = Int64(totalPhotos)
+        do {
+            print("totalimages ",albumLoc.imageCount)
+            try context.save()
+        } catch let error as NSError{
+            print("saveLocInfo: \(error), \(error.userInfo).")
+        }
+    }
+    
     //Save image for a given album location
     func  saveDownloadedImageDetails(_ downloadedImage: Data, _ farm: Int32, _ server: String, _ secret: String, _ id: String, _ albumLoc: AlbumLocation) {
         let appDelegate = UIApplication.shared.delegate as! AppDelegate
